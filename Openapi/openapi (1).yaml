@@ -1,0 +1,134 @@
+openapi: 3.0.3
+info:
+  title: Team_10 IT_Technologies Homework
+  description: |-
+    Выполнение задания №3 подпункт 3.
+    3. Для всех взаимодействий определить общий формат данных для вызовов и возвращаемых значений:
+          учесть, что сообщение об ошибке может быть представлено на различных языках (i18n)
+  version: 1.0.11
+
+tags:
+  - name: Пользователь
+paths:
+  /register:
+    post:
+      tags:
+        - Пользователь
+      summary: Создаёт нового пользователя
+      description: Пользователь регистрируется, вводя пароль и email.
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        
+        required: true
+      responses:
+        '200':
+          description: Profile Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    description: Registration token
+                    type: string
+                    format: byte
+                example: 7y7OxHhiVs8EDXmHFV3U/ib-veR4zM-4sKGUtKv55ijBpjDveCSFQcJ0N8yF2hWKBw!xzsk84TJoFSh!zKaamHjjMT0FAOUGVT??49a6F5/l=oa!Y6mgKfFa?a9zH86?ON9eXC-K4YiFuXcI0L3gs9dKt8r-zpfhNRJnvyjR6wLt!2LajE-dAg3?WqNLK7A7HhQOp1F3x1OaxF4Jzo53d220Z2E-MtqXBRrltHsmrUjaEM32o6Ar8BOUizhuAzD?
+        '400':
+          description: E-mail already exists
+        '500':
+          description: Overloaded
+  /login:
+    post:
+      tags:
+        - Пользователь
+      summary: Вход пользователя в систему
+      description: Пользователь входит в систему под своим email-ом и паролем
+      operationId: loginUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+              
+        
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Неверные логин или пароль
+        '500':
+          description: Server not found
+  /logout:
+    get:
+      tags:
+        - Пользователь
+      summary: Выход пользователя из системы
+      description: ''
+      operationId: logoutUser
+      parameters: []
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Server not found
+  /send_recovery_token:
+    post:
+      tags:
+        - Пользователь
+      summary: Отправялет пользователю на почту токен восставновления пароля
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: User's e-mail
+                  type: string
+                  format: email
+              example:
+                email: krutoislon@gmail.com
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Server not found
+  /check_recovery_token:
+    get:
+      tags:
+        - Пользователь
+      summary: Сверяет токен восстановления
+      parameters:
+        - name: Token
+          in: query
+          description: Токен восстановления пароля
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Token doesn't much
+        '500':
+          description: Server not found
+              
+      
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          example: krutoislon@gmail.com
+        password: 
+          type: string
+          example: 1488dreamcore
+        
+ 
+   
